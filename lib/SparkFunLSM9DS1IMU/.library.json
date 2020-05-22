@@ -1,0 +1,54 @@
+{
+    "description": "A driver library for the LSM9DS1 IMU.", 
+    "repository": {
+        "url": "https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "atmelavr", 
+        "atmelmegaavr", 
+        "atmelsam", 
+        "espressif32", 
+        "espressif8266", 
+        "gd32v", 
+        "infineonxmc", 
+        "intel_arc32", 
+        "kendryte210", 
+        "microchippic32", 
+        "nordicnrf51", 
+        "nordicnrf52", 
+        "ststm32", 
+        "ststm8", 
+        "teensy", 
+        "timsp430"
+    ], 
+    "export": {
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ], 
+        "include": null
+    }, 
+    "authors": [
+        {
+            "maintainer": true, 
+            "name": "Jim Lindblom", 
+            "url": null, 
+            "email": "jim@sparkfun.com"
+        }
+    ], 
+    "keywords": [
+        "sensors"
+    ], 
+    "id": 1825, 
+    "name": "SparkFun LSM9DS1 IMU", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "2.0.0", 
+    "homepage": "https://www.sparkfun.com/products/13284"
+}
