@@ -20,7 +20,7 @@
    - `PCF8563_Library`        (未修改,可以使用主分支)
    - `SerialFlash`            (已修改 => 主要添加SoftSPI头文件,兼容SoftSPI)
    - `SoftSPI `               (单独无分支)
-   - `SparkFun LSM9DS1 IMU`   (未修改,可以使用主分支)
+   - `SparkFun_MPU-9250-DMP_Arduino_Library`   (未修改,可以使用主分支)
 
 2. 默认使用[Adafruit_nRF52_Arduino](https://github.com/adafruit/Adafruit_nRF52_Arduino),所以出厂已经烧录[Adafruit_nRF52_Bootloader](https://github.com/adafruit/Adafruit_nRF52_Bootloader),如果使用**nRF5-SDK**对板子编程 将会丢失原先Bootloader
 
