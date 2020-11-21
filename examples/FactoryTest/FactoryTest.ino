@@ -42,8 +42,9 @@ PCF8563_Class rtc;
 MPU9250_DMP imu;
 
 uint8_t omm = 99;
+uint8_t odate = 100;
 uint32_t targetTime = 0;       // for next 1 second timeout
-uint8_t hh, mm, ss ;
+uint8_t date_now, year_now, month_now, hh, mm, ss;
 bool initial = 1;
 uint8_t func_select = 0;
 bool pressed = false;
@@ -231,16 +232,27 @@ void RTC_Show()
     static int16_t x, y;
     if (targetTime < millis()) {
         RTC_Date datetime = rtc.getDateTime();
+        date_now = datetime.day;
+        month_now = datetime.month;
+        year_now = datetime.year;
         hh = datetime.hour;
         mm = datetime.minute;
         ss = datetime.second;
         targetTime = millis() + 1000;
+        /*
         if (ss == 0 || initial) {
             initial = 0;
             tft.setTextSize(1);
             tft.setTextColor(ST77XX_GREEN, ST77XX_BLACK);
             tft.setCursor (8, 60);
             tft.print(__DATE__); // This uses the standard ADAFruit small font
+        }*/
+        if(odate!=date_now)
+        {
+             tft.setTextSize(1);
+            tft.setTextColor(ST77XX_GREEN, ST77XX_BLACK);
+            tft.setCursor (8, 60);
+            tft.printf("%d.%d", month_now, date_now);
         }
 
         float vbat_mv = readVBAT();
