@@ -13,6 +13,10 @@
 
 #include "charge.h"
 
+// If you need to turn on DRV2605, uncomment this line
+// #define ENABLE_DRV2605
+
+
 #define SPI_FLASH_MOSI  16
 #define SPI_FLASH_MISO  11
 #define SPI_FLASH_SCLK  17
@@ -38,10 +42,18 @@
 #define TP_PIN_PIN      5
 #define TOUCH_PW        29
 
+
+#define MOTOR_PIN       28
+
+
+
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 PCF8563_Class rtc;
 MPU9250_DMP imu;
+
+#ifdef ENABLE_DRV2605
 Adafruit_DRV2605 drv;
+#endif
 
 uint8_t omm = 99;
 uint8_t odate = 100;
@@ -162,6 +174,7 @@ void setup()
 
     Wire.begin();
 
+#ifdef ENABLE_DRV2605
     Wire.beginTransmission(0x5A);
     if (Wire.endTransmission() != 0) {
         Serial.println("No detected drv2605 !!!");
@@ -179,6 +192,12 @@ void setup()
     // default, internal trigger when sending GO command
     drv.setMode(DRV2605_MODE_INTTRIG);
     tft.println("DRV2605 Started!!!");
+#else
+    /*If DRV2605 is not defined, the normal vibration module will be turned on by default*/
+    pinMode(MOTOR_PIN, OUTPUT);
+#endif
+
+
 
     found_imu  = setupIMU();
     if (!found_imu) {
@@ -244,8 +263,6 @@ void setup()
     }
 
     tft.fillScreen(ST77XX_BLACK);
-
-
 }
 
 
@@ -343,11 +360,7 @@ void IMU_Show()
         tft.print("ACC x:"); tft.print( imu.calcAccel(imu.ax)); tft.print(" y:"); tft.print(imu.calcAccel(imu.ay)); tft.print(" z:"); tft.println(imu.calcAccel(imu.az));
         tft.print("GYR x:"); tft.print( imu.calcGyro(imu.gx)); tft.print(" y:"); tft.print(imu.calcGyro(imu.gy)); tft.print(" z:"); tft.println(imu.calcGyro(imu.gz));
         tft.print("MAG x:"); tft.print( imu.calcMag(imu.mx)); tft.print(" y:"); tft.print(imu.calcMag(imu.my)); tft.print(" z:"); tft.println(imu.calcMag(imu.mz));
-
-
     }
-
-
     delay(200);
 }
 
@@ -366,10 +379,17 @@ void loop()
     if (digitalRead(TP_PIN_PIN) == HIGH) {
         if (!pressed) {
             if (digitalRead(TFT_BL)) {
+
+#ifdef ENABLE_DRV2605
                 drv.setWaveform(0, 54);  // play effect
                 drv.setWaveform(1, 0);       // end waveform
                 // play the effect!
                 drv.go();
+#else
+                digitalWrite(MOTOR_PIN, HIGH);
+                delay(100);
+                digitalWrite(MOTOR_PIN, LOW);
+#endif
                 func_select = func_select + 1 > 2 ? 0 : func_select + 1;
             } else {
                 Serial.println("Trun on");
