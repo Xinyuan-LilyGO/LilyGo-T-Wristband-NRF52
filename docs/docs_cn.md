@@ -5,11 +5,13 @@
 
 ## 如何使用
 ### 使用**Arduino IDE**
-1. 打开Arduino,打开首选项 -> 添加https://www.adafruit.com/package_adafruit_index.json 到 板安装管理器地址列表
-2. 打开板子安装管理器中,等待索引更新完成,选择'Adafruit nRF52 by Adafruit'点击安装
-3. 安装完成后,在板子列表中选择'Adafruit Feather nRF52832'
-4. 将lib目录中的所有文件夹拷贝到`"C:\User\<YourName>\Documents\Arduino\libraries"`中
-5. 打开草图 => 工具 => 端口 ,选择已连接板子的端口,然后点击上传
+1. 下载并且安装CH340驱动程序
+   - [CH340 Drivers](http://www.wch-ic.com/search?q=ch340&t=downloads)
+2. 打开Arduino,打开首选项 -> 添加https://www.adafruit.com/package_adafruit_index.json 到 板安装管理器地址列表
+3. 打开板子安装管理器中,等待索引更新完成,选择'Adafruit nRF52 by Adafruit'点击安装
+4. 安装完成后,在板子列表中选择'Adafruit Feather nRF52832'
+5. 将lib目录中的所有文件夹拷贝到`"C:\User\<YourName>\Documents\Arduino\libraries"`中
+6. 打开草图 => 工具 => 端口 ,选择已连接板子的端口,然后点击上传
 
 ### 使用**PlatformIO**，直接打开即可,在初次使用会自动下载**Adafruit_nRF52_Arduino**
 

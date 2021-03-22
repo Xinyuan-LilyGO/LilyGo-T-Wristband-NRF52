@@ -6,6 +6,8 @@ The default example is **Arduino**, which also supports [**nRF5-SDK**](https://w
 
 ## How to use
 ### Using Arduino IDE
+1. Download and install the CH340 driver 
+   - [CH340 Drivers](http://www.wch-ic.com/search?q=ch340&t=downloads)
 1. Open Arduino, open preferences-> add https://www.adafruit.com/package_adafruit_index.json to the board installation manager address list
 2. Open the board installation manager, wait for the index update to complete, select 'Adafruit nRF52 by Adafruit' and click install
 3. After the installation is complete, select 'Adafruit Feather nRF52832' in the board list
