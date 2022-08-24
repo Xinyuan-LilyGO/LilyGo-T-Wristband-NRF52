@@ -68,8 +68,7 @@ uint32_t vbat_pin = PIN_VBAT;
 #define VBAT_DIVIDER_COMP (1.403F)    // Compensation factor for the VBAT divider
 #define REAL_VBAT_MV_PER_LSB (VBAT_DIVIDER_COMP * VBAT_MV_PER_LSB)
 
-enum PAGE
-{
+enum PAGE {
     TIME_PAGE,
     IMU_PAGE,
     SLEEP_PAGE
@@ -105,8 +104,7 @@ bool setupIMU()
     // initialize the MPU-9250 to it's default values.
     // Most functions return an error code - INV_SUCCESS (0)
     // indicates the IMU was present and successfully set up
-    if (imu.begin() != INV_SUCCESS)
-    {
+    if (imu.begin() != INV_SUCCESS) {
         Serial.println("Unable to communicate with MPU-9250");
         Serial.println("Check connections, and try again.");
         Serial.println();
@@ -150,13 +148,16 @@ bool setupDisplay()
 {
     // OR use this initializer (uncomment) if using a 0.96" 160x80 TFT:
     tft.initR(INITR_MINI160x80); // Init ST7735S mini display
+    tft.sendCommand(ST77XX_INVON);  //The bracelet uses two screen models, when the color is not normal, please comment this line
+
     tft.setRotation(0);
     tft.fillScreen(ST77XX_BLACK);
     tft.setCursor(0, 0);
     return true;
 }
-void check_pin_state(){
-    
+void check_pin_state()
+{
+
 }
 
 void setup()
@@ -176,51 +177,41 @@ void setup()
     setupDisplay();
 
     found_imu = setupIMU();
-    if (!found_imu)
-    {
+    if (!found_imu) {
         Serial.println("setupIMU fail");
         tft.println("setupIMU fail");
-    }
-    else
-    {
+    } else {
         Serial.println("setupIMU pass");
         tft.println("setupIMU pass");
     }
 
-    if (!SerialFlash.begin(SPI_FLASH_CS))
-    {
+    if (!SerialFlash.begin(SPI_FLASH_CS)) {
         tft.setTextColor(ST77XX_RED, ST77XX_BLACK);
         Serial.println("setupSerialFlash fail");
         tft.println("setupSerialFlash fail");
-    }
-    else
-    {
+    } else {
         Serial.println("setupSerialFlash pass");
         tft.println("setupSerialFlash pass");
     }
 
     Wire.beginTransmission(0x51);
-    if (Wire.endTransmission() == 0)
-    {
+    if (Wire.endTransmission() == 0) {
         rtc.begin();
         found_rtc = true;
-    }
-    else
-    {
+    } else {
         tft.setTextColor(ST77XX_RED, ST77XX_BLACK);
         Serial.println("RTC deteced fail");
         tft.println("RTC deteced fail");
     }
 
-    if (found_rtc)
-    {
+    if (found_rtc) {
         //! RTC Interrupt Test
         pinMode(RTC_INT_PIN, INPUT_PULLUP); //need change to rtc_pin
         attachInterrupt(
-            RTC_INT_PIN, [] {
-                rtcIrq = 1;
-            },
-            FALLING);
+        RTC_INT_PIN, [] {
+            rtcIrq = 1;
+        },
+        FALLING);
 
         rtc.disableAlarm();
         rtc.setDateTime(2020, 11, 7, 17, 4, 57);
@@ -246,25 +237,23 @@ void setup()
 
     pinMode(CHARGE_PIN, INPUT_PULLUP);
     attachInterrupt(
-        CHARGE_PIN, [] {
-            charge_indication = true;
-        },
-        CHANGE);
+    CHARGE_PIN, [] {
+        charge_indication = true;
+    },
+    CHANGE);
 
-    if (digitalRead(CHARGE_PIN) == LOW)
-    {
+    if (digitalRead(CHARGE_PIN) == LOW) {
         charge_indication = true;
     }
 
     tft.fillScreen(ST77XX_BLACK);
-     timer.attachInterrupt(&check_pin_state, 300); // microseconds
+    timer.attachInterrupt(&check_pin_state, 300); // microseconds
 }
 
 void RTC_Show()
 {
     static int16_t x, y;
-    if (targetTime < millis())
-    {
+    if (targetTime < millis()) {
         RTC_Date datetime = rtc.getDateTime();
         date_now = datetime.day;
         month_now = datetime.month;
@@ -289,20 +278,18 @@ void RTC_Show()
         y = 42;
         uint8_t min_xpos = 18;
         uint8_t min_ypos = 62;
-        if (odate != date_now)
-        {
+        if (odate != date_now) {
             tft.setTextSize(1);
             tft.setTextColor(TEXT_COLOR, ST77XX_BLACK);
             tft.setCursor(30, 100);
             tft.printf("%d.%d", month_now, date_now);
             tft.setCursor(18, 112);
             tft.print("For macho");
-            
+
 
         }
 
-        if (omm != mm)
-        {
+        if (omm != mm) {
             /*
             tft.setTextColor(0x39C4, ST77XX_BLACK);
             tft.setTextSize(4);
@@ -316,8 +303,7 @@ void RTC_Show()
             tft.setCursor(xpos, ypos);
             tft.setTextColor(TEXT_COLOR, ST77XX_BLACK); // Pink
             omm = mm;
-            if (hh < 10)
-            {
+            if (hh < 10) {
                 tft.print('0');
             }
             tft.print(hh);
@@ -325,17 +311,15 @@ void RTC_Show()
             tft.setTextSize(2);
             tft.print(" --");
             tft.setTextSize(4);
-            tft.drawRGBBitmap(3, 140, cat, 20,16);
+            tft.drawRGBBitmap(3, 140, cat, 20, 16);
             tft.setCursor(min_xpos, min_ypos);
-            if (mm < 10)
-            {
+            if (mm < 10) {
                 tft.print('0');
             }
 
             tft.print(mm);
         }
-        if (ss % 2)
-        {
+        if (ss % 2) {
             tft.setTextColor(0x39C4, ST77XX_BLACK);
             tft.setTextSize(2);
             tft.setCursor(x, y);
@@ -343,14 +327,12 @@ void RTC_Show()
             tft.fillRect(3, 140, 20, 16, ST77XX_BLACK);
             tft.setTextSize(4);
             tft.setTextColor(0xFBE0, ST77XX_BLACK);
-        }
-        else
-        {
+        } else {
             tft.setTextColor(TEXT_COLOR, ST77XX_BLACK);
             tft.setTextSize(2);
             tft.setCursor(x, y);
             tft.print(" --");
-            tft.drawRGBBitmap(3, 140, cat, 20,16);
+            tft.drawRGBBitmap(3, 140, cat, 20, 16);
             tft.setTextSize(4);
         }
     }
@@ -362,8 +344,7 @@ void IMU_Show()
     // is available. It will return a boolean true or false
     // (New magnetometer data cannot be checked, as the library
     //  runs that sensor in single-conversion mode.)
-    if (imu.dataReady())
-    {
+    if (imu.dataReady()) {
         // Call update() to update the imu objects sensor data.
         // You can specify which sensors to update by combining
         // UPDATE_ACCEL, UPDATE_GYRO, UPDATE_COMPASS, and/or
@@ -402,30 +383,21 @@ void IMU_Show()
 void loop()
 {
 //tft.drawRGBBitmap(3, 140, cat, 20,16);
-    if (charge_indication)
-    {
+    if (charge_indication) {
         charge_indication = false;
-        if (digitalRead(CHARGE_PIN) == LOW)
-        {
+        if (digitalRead(CHARGE_PIN) == LOW) {
             tft.drawRGBBitmap(25, 140, charge, 16, 16);
-        }
-        else
-        {
+        } else {
             tft.fillRect(25, 140, 16, 16, ST77XX_BLACK);
-            
+
         }
     }
-    
-if (digitalRead(TP_PIN_PIN) == HIGH)
-    {
-        if (!pressed)
-        {
-            if (digitalRead(TFT_BL))
-            {
+
+    if (digitalRead(TP_PIN_PIN) == HIGH) {
+        if (!pressed) {
+            if (digitalRead(TFT_BL)) {
                 func_select = func_select + 1 > 2 ? 0 : func_select + 1;
-            }
-            else
-            {
+            } else {
                 Serial.println("Trun on");
                 func_select = 0;
                 digitalWrite(TFT_BL, HIGH);
@@ -438,15 +410,12 @@ if (digitalRead(TP_PIN_PIN) == HIGH)
             omm = 99;
             pressed = true;
         }
-    }
-    else
-    {
+    } else {
         pressed = false;
     }
 
 
-    switch (func_select)
-    {
+    switch (func_select) {
     case 0:
         RTC_Show();
         break;
@@ -454,8 +423,7 @@ if (digitalRead(TP_PIN_PIN) == HIGH)
         IMU_Show();
         break;
     case 2:
-        if (digitalRead(TFT_BL))
-        {
+        if (digitalRead(TFT_BL)) {
             // imu.sleepGyro(true);
             tft.sendCommand(ST77XX_SLPIN);
             digitalWrite(TFT_BL, LOW);
@@ -467,13 +435,12 @@ if (digitalRead(TP_PIN_PIN) == HIGH)
             sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
 
             attachInterrupt(
-                TP_PIN_PIN, []() {
-                    if (sleep_enable)
-                    {
-                        sleep_enable = false;
-                    }
-                },
-                RISING);
+            TP_PIN_PIN, []() {
+                if (sleep_enable) {
+                    sleep_enable = false;
+                }
+            },
+            RISING);
 
             NRF_UARTE0->ENABLE = 0; //disable UART
             NRF_SAADC->ENABLE = 0;  //disable ADC
@@ -486,8 +453,7 @@ if (digitalRead(TP_PIN_PIN) == HIGH)
             NRF_SPI1->ENABLE = 0;  //disable SPI
             NRF_SPI2->ENABLE = 0;  //disable SPI
 
-            while (sleep_enable)
-            {
+            while (sleep_enable) {
                 __WFE();
                 __WFI();
             }

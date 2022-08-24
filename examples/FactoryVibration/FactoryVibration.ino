@@ -148,6 +148,7 @@ bool setupDisplay()
 {
     // OR use this initializer (uncomment) if using a 0.96" 160x80 TFT:
     tft.initR(INITR_MINI160x80);  // Init ST7735S mini display
+    tft.sendCommand(ST77XX_INVON);  //The bracelet uses two screen models, when the color is not normal, please comment this line
     tft.setRotation(1);
     tft.fillScreen(ST77XX_BLACK);
     tft.setCursor(0, 0);
