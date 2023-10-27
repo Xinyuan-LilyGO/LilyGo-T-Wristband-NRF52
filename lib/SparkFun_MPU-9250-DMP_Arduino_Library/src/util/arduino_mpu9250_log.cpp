@@ -1,12 +1,12 @@
 /******************************************************************************
-arduino_mpu9250_log.cpp - MPU-9250 Digital Motion Processor Arduino Library 
+arduino_mpu9250_log.cpp - MPU-9250 Digital Motion Processor Arduino Library
 Jim Lindblom @ SparkFun Electronics
 original creation date: November 23, 2016
 https://github.com/sparkfun/SparkFun_MPU9250_DMP_Arduino_Library
 
 This library implements motion processing functions of Invensense's MPU-9250.
 It is based on their Emedded MotionDriver 6.12 library.
-	https://www.invensense.com/developers/software-downloads/
+    https://www.invensense.com/developers/software-downloads/
 
 Development environment specifics:
 Arduino IDE 1.6.12
@@ -28,12 +28,13 @@ Supported Platforms:
 #define PACKET_QUAT     (2)
 #define PACKET_DATA     (3)
 
-void logString(char * string) 
+void logString(char *string)
 {
 }
 
-int _MLPrintLog (int priority, const char* tag, const char* fmt, ...)
+int _MLPrintLog (int priority, const char *tag, const char *fmt, ...)
 {
+    return -1;
 }
 
 void eMPL_send_quat(long *quat)

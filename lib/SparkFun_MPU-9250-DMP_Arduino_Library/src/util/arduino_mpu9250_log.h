@@ -1,12 +1,12 @@
 /******************************************************************************
-arduino_mpu9250_log.h - MPU-9250 Digital Motion Processor Arduino Library 
+arduino_mpu9250_log.h - MPU-9250 Digital Motion Processor Arduino Library
 Jim Lindblom @ SparkFun Electronics
 original creation date: November 23, 2016
 https://github.com/sparkfun/SparkFun_MPU9250_DMP_Arduino_Library
 
 This library implements motion processing functions of Invensense's MPU-9250.
 It is based on their Emedded MotionDriver 6.12 library.
-	https://www.invensense.com/developers/software-downloads/
+    https://www.invensense.com/developers/software-downloads/
 
 Development environment specifics:
 Arduino IDE 1.6.12
@@ -18,14 +18,14 @@ Supported Platforms:
 #ifndef _ARDUINO_MPU9250_LOG_H_
 #define _ARDUINO_MPU9250_LOG_H_
 
-#define MPL_LOG_UNKNOWN		(0)
-#define MPL_LOG_DEFAULT		(1)
-#define MPL_LOG_VERBOSE		(2)
-#define MPL_LOG_DEBUG		(3)
-#define MPL_LOG_INFO		(4)
-#define MPL_LOG_WARN		(5)
-#define MPL_LOG_ERROR		(6)
-#define MPL_LOG_SILENT		(8)
+#define MPL_LOG_UNKNOWN     (0)
+#define MPL_LOG_DEFAULT     (1)
+#define MPL_LOG_VERBOSE     (2)
+#define MPL_LOG_DEBUG       (3)
+#define MPL_LOG_INFO        (4)
+#define MPL_LOG_WARN        (5)
+#define MPL_//log_eRROR     (6)
+#define MPL_LOG_SILENT      (8)
 
 typedef enum {
     PACKET_DATA_ACCEL = 0,
@@ -39,18 +39,18 @@ typedef enum {
     NUM_DATA_PACKETS
 } eMPL_packet_e;
 
-#if defined(__cplusplus) 
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
 #include <stdarg.h>
 
-void logString(char * string);
-int _MLPrintLog (int priority, const char* tag, const char* fmt, ...);
+void logString(char *string);
+int _MLPrintLog (int priority, const char *tag, const char *fmt, ...);
 void eMPL_send_quat(long *quat);
 void eMPL_send_data(unsigned char type, long *data);
 
-#if defined(__cplusplus) 
+#if defined(__cplusplus)
 }
 #endif
 
